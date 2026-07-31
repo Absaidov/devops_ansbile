@@ -1,9 +1,23 @@
 - hosts: webservers
-  gather_facts: no
+  gather_facts: yes
 
   tasks:
-    - name: install git
+    - name: install git on RedHat family
+      package:
+        name: git
+        state: present
+      become: yes
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: install git on Debian family
       ansible.builtin.apt:
         name: git
-        state: latest
+        state: present
+      become: yes
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Create .gitconfig
+      ansible.builtin.template:
+        src: files/.gitconfig
+        dest: "/home/jamal/.gitconfig"
       become: yes

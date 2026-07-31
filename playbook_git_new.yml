@@ -1,0 +1,24 @@
+---
+- name: Install Git and configure .gitconfig
+  hosts: webservers
+  gather_facts: true
+
+  tasks:
+    - name: Install Git on RedHat-based systems
+      package:
+        name: git
+        state: present
+      when: ansible_facts['os_family'] == "RedHat"
+      become: true
+
+    - name: Install Git on Debian-based systems
+      apt:
+        name: git
+        state: present  # или "latest", если нужно всегда ставить последнюю версию
+      when: ansible_facts['os_family'] == "Debian"
+      become: true
+
+    - name: Create .gitconfig for jamal
+      ansible.builtin.template:
+        src: files/.gitconfig
+        dest: "/home/jamal/.gitconfig"
