@@ -1,11 +1,39 @@
 # На какой группе серверов
-- hosts: appservers
+- hosts: webservers
+
+  vars:
+    server_message: "This is server {{ ansible_facts['hostname']}}!"
+    server_date: "{{ansible_facts['date_time']['date']}}"
+    nginx_port: 8080
+    root_dir: /usr/share/nginx/html
 
   tasks:
-    - name: install git
-      # apt-get update && apt-get install redis-server
+    - name: install nginx
       ansible.builtin.apt:
-        name: git
-        state: present
-        update_cache: yes
+        name: nginx
+        state: latest
+      become: yes
+
+    - name: update nginx config
+      ansible.builtin.template:
+        src: files/nginx.conf
+        dest: /etc/nginx/nginx.conf
+      notify:
+        - restart nginx
+      become: yes
+
+    - name: install html_file
+      ansible.builtin.template:
+        src: templates/index.html.j2
+        dest: "{{root_dir}}/index.html"
+      notify:
+        - restart nginx
+      become: yes
+
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
       become: yes
