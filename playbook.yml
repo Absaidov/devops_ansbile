@@ -8,6 +8,16 @@
     root_dir: /usr/share/nginx/html
 
   tasks:
+    -
+    - name: install cowsay
+      ansible.builtin.apt:
+        name: cowsay
+        state: latest
+      become: yes
+
+    - ansible.builtin.shell: cowsay "This is server {{ ansible_facts['hostname']}}!"
+      register: cowsay_result
+
     - name: install nginx
       ansible.builtin.apt:
         name: nginx
@@ -29,7 +39,6 @@
       notify:
         - restart nginx
       become: yes
-
 
   handlers:
     - name: restart nginx
