@@ -15,7 +15,7 @@
         state: latest
       become: yes
 
-    - ansible.builtin.shell: cowsay "This is server {{ ansible_facts['hostname']}}!"
+    - ansible.builtin.shell: cowsay "Гамид Мууууууу This is server {{ ansible_facts['hostname']}}!"
       register: cowsay_result
 
     - name: install nginx
