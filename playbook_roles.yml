@@ -1,0 +1,4 @@
+- hosts: webservers
+  roles:
+    - role: grzegorzfranus.postgresql
+#    - role: mrlesmithjr.ansible-nodejs
