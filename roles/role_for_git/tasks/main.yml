@@ -1,16 +1,11 @@
-- hosts: webservers
-  gather_facts: yes
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for role_for_git
 
-  vars:
-    users:
-      - jaime
-      - sansa
-      - robert
-
-  tasks:
     - name: Users list
       ansible.builtin.user:
         name: "{{ item }}"
+        password: 12345
         shell: /bin/bash
       loop: "{{ users }}"
       become: yes

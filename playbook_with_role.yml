@@ -1,0 +1,11 @@
+- hosts: webservers
+
+  gather_facts: yes
+
+  vars:
+    users:
+      - jamal1
+      - jamal2
+      - jamal3
+  roles:
+    - role: role_for_git
